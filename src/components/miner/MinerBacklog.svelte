@@ -1,32 +1,37 @@
 <script lang="ts">
-  import { backlogInProgress } from "../../miner";
+  import { _ } from "svelte-i18n";
+  import { onMount, onDestroy } from "svelte";
   import { submitBacklog } from "../../miner_invoke";
-  import { onMount } from "svelte";
+  import { backlogInProgress } from "../../miner";
 
+  let unsubs;
   let inProgress = false;
+  
   onMount(async () => {
-    backlogInProgress.subscribe(b => inProgress = b);
+    unsubs = backlogInProgress.subscribe(b => inProgress = b);
   });
+
+  onDestroy(async () => {
+    unsubs && unsubs();
+  }); 
 </script>
 
-<main class="uk-margin" >
+<main class="uk-margin">
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-    Sync Tower Proofs
+    {$_("miner.miner_backlog.title")}
   </h4>
   <div class="uk-margin uk-grid">
     <div>
+      <p>
+        {$_("miner.miner_backlog.subtitle")}
+      </p>
       {#if inProgress}
-        <button class="uk-button" disabled>Backlog in Progress</button>
+        <button class="uk-button" disabled>{$_("miner.miner_backlog.in_process")}</button>
       {:else}
         <button class="uk-button uk-button-default" on:click={() => submitBacklog()}>
-          Submit Local Proof Backlog
+          {$_("miner.miner_backlog.btn_submit")}
         </button>
       {/if}
-    </div>
-    <div class="uk-margin">
-      <span>
-        If any local proofs are not being committed to chain, you will notice the local proof number will be higher than the on-chain count. You can manually resubmit with the button above.
-      </span>
     </div>
   </div>
 </main>

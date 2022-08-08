@@ -1,15 +1,20 @@
 //! networks to connect to
 
-
-
-use diem_types::waypoint::Waypoint;
+use crate::{
+  carpe_error::CarpeError,
+  configs_network::{
+    override_upstream_node, set_network_configs, set_waypoint, set_waypoint_from_upstream,
+    NetworkProfile,
+  },
+};
+use diem_types::{waypoint::Waypoint, chain_id::NamedChain};
+use ol_types::rpc_playlist;
 use url::Url;
 
-use crate::{carpe_error::CarpeError, configs_network::{NetworkProfile, Networks, set_network_configs, set_waypoint, set_waypoint_from_upstream, override_upstream_node, set_playlist}};
-
 #[tauri::command]
-pub fn toggle_network(network: Networks) -> Result<NetworkProfile, CarpeError> {
-  set_network_configs(network)
+pub fn toggle_network(network: String, custom_playlist: Option<Url>) -> Result<NetworkProfile, CarpeError> {
+  let name = NamedChain::str_to_named(&network)?;
+  set_network_configs(name, custom_playlist)
 }
 
 #[tauri::command(async)]
@@ -18,8 +23,9 @@ pub fn get_networks() -> Result<NetworkProfile, CarpeError> {
 }
 
 #[tauri::command]
-pub fn update_from_playlist(url: Url) -> Result<NetworkProfile, CarpeError> {
-  set_playlist(url).map_err(|e| CarpeError::misc(&e.to_string()))?;
+pub fn override_playlist(url: Url) -> Result<NetworkProfile, CarpeError> {
+  let fpl = rpc_playlist::FullnodePlaylist::http_fetch_playlist(url)?;
+  fpl.update_config_file(None)?;
   NetworkProfile::new()
 }
 
@@ -35,9 +41,9 @@ pub fn force_waypoint(wp: Waypoint) -> Result<NetworkProfile, CarpeError> {
   NetworkProfile::new()
 }
 
-#[tauri::command]
-pub fn refresh_waypoint() -> Result<NetworkProfile, CarpeError> {
-  set_waypoint_from_upstream()?;
+#[tauri::command(async)]
+pub async fn refresh_waypoint() -> Result<NetworkProfile, CarpeError> {
+  // dbg!("refresh_waypoint");
+  set_waypoint_from_upstream().await?;
   NetworkProfile::new()
 }
-

@@ -1,59 +1,47 @@
 <script lang="ts">
-  import { get_locale, setAccount } from "../../accountActions";
+  import { _ } from "svelte-i18n";
+  import { setAccount } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
-  import IconMining from '../icons/IconMining.svelte';
+  import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import { carpeTick } from "../../tick"
+  import { printCoins, unscaledCoins } from "../../coinHelpers";  
 
   UIkit.use(Icons);
-  
+
   export let my_account: AccountEntry;
-  export let account_list: AccountEntry[];
-  export let isMining: boolean; 
+  export let accountList: AccountEntry[];
+  export let isMining: boolean;
   export let isConnected: boolean;
-
-  // TODO: move to tauri commands
-  function formatBalance(balance) {
-    const balanceScaled = balance / 1000000
-
-    return balanceScaled.toLocaleString(get_locale(), {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  }
 
 </script>
 
 <main>
-  {#if account_list == null}
-    <span uk-spinner></span>
-  {:else if account_list.length > 0}
+  {#if accountList == null}
+    <span uk-spinner />
+  {:else if accountList.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
           <th />
-          <th>Nickname</th>
-          <th>Address</th>
-          <th>Authkey</th>
-          <th>Balance</th>
+          <th>{$_("wallet.account_list.nickname")}</th>
+          <th>{$_("wallet.account_list.address")}</th>
+          <th>{$_("wallet.account_list.authkey")}</th>
+          <th class="uk-text-right">{$_("wallet.account_list.balance")}</th>
         </tr>
       </thead>
       <tbody>
-        {#each account_list as a, i}
+        {#each accountList as a, i}
           <!-- svelte-ignore missing-declaration -->
           <tr
-            class="{
-              isMining && a.account == my_account.account
-                ? 'uk-text-primary'
-                : ''
-              }"
-            on:click={() => { setAccount(a.account); carpeTick(); } }
+            class={isMining && a.account == my_account.account
+              ? "uk-text-primary"
+              : ""}
+            on:click={() => setAccount(a.account)}
           >
-            <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
             <td>
               {#if a.account == my_account.account}
-                {#if isMining} 
+                {#if isMining}
                   <IconMining />
                 {:else}
                   <span uk-icon="user" />
@@ -63,29 +51,36 @@
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
-            <td class="uk-inline">
-              <div uk-dropdown>
-                {#if a.balance < 1}
-                  While mining you will see the balance go down for every proof you send.
-                  If you succeed at mining your balance will go up only on the next day (epoch).
-                {/if}
-              </div>
+            <td class="uk-text-right">
+              {#if (a.on_chain != null) && (a.on_chain == false)}
+                {$_("wallet.account_list.account_on_chain")}
+              {:else if a.on_chain}
+                <div class="uk-inline">
+                  
+                  {#if unscaledCoins(a.balance) < 1}
+                    <!-- TODO: make this icon align verical middle. -->
+                    <span
+                      class="uk-margin uk-text-warning"
+                      uk-icon="icon: info"
+                    />
+                    <div uk-dropdown>
+                      {$_("wallet.account_list.message")}
+                    </div>
+                  {/if}
 
-            {#if a.on_chain == null}
-              offline... 
-            {:else if a.on_chain}
-              {formatBalance(a.balance)}
-            {:else if a.on_chain == undefined}
-              loading...
-            {:else if !isConnected}
-              offline..
-            {:else}
-              Account Not On Chain
-            {/if}
+                  {printCoins(a.balance)}
+                </div>
+              {:else if a.balance == null}
+                {$_("wallet.account_list.loading")}...
+              {:else if !isConnected}
+                {$_("wallet.account_list.offline")}...
+              {:else}
+                {$_("wallet.account_list.account_on_chain")}
+              {/if}
             </td>
           </tr>
         {/each}
       </tbody>
-    </table>    
+    </table>
   {/if}
 </main>

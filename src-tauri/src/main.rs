@@ -11,7 +11,7 @@ pub mod configs;
 pub mod configs_network;
 pub mod configs_profile;
 pub mod key_manager;
-pub mod seed_peers;
+mod waypoint;
 
 // use std::env;
 
@@ -25,12 +25,10 @@ fn main() {
   pretty_env_logger::init();
 
   //////// FORCE TEST SETTINGS ON START ////////////////////
-  // uncomment below to explicitly set "test" env 
+  // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
   // set_env("test".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
-
-
 
   let menu = Menu::new()
     .add_submenu(Submenu::new(
@@ -59,27 +57,33 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       // Accounts
       is_init,
-      get_all_accounts,
       refresh_accounts,
+      get_all_accounts,
+      get_account_events,
       add_account,
       keygen,
       init_from_mnem,
       remove_accounts,
       switch_profile,
       // Networks
+      refresh_upstream_peer_stats,
       force_upstream,
       force_waypoint,
-      update_from_playlist,
+      override_playlist,
       get_networks,
       refresh_waypoint,
       toggle_network,
       // Queries
       query_balance,
+      query_makewhole,
+      get_recovery_mode,
       // Transactions
       demo_tx,
       create_user_account,
       wallet_type,
-      //Tower
+      coin_transfer,
+      claim_make_whole,
+      // Tower
       miner_once,
       start_backlog_sender_listener,
       get_local_height,
@@ -105,6 +109,9 @@ fn main() {
       mock_build_tower,
       start_forever_task,
       debug_start_listener,
+      // Preferences
+      get_preferences,
+      set_preferences_locale
     ])
     .menu(menu)
     .run(tauri::generate_context!())

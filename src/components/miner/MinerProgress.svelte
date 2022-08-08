@@ -1,40 +1,42 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
+  import { onMount, onDestroy, afterUpdate } from "svelte";
+  import { _ } from "svelte-i18n";
   import {
     minerProofComplete,
     minerLoopEnabled,
-    tower,
   } from "../../miner";
   import { setProofProgres } from "../../miner_invoke";
+
+  export let tower;
 
   let percent = 0;
   let looper;
   let proofDone = false;
-  let bar;
   let enable = false;
+
+  let unsubsProofComplete;
+  let unsubsLoopEnabled;
+
+  afterUpdate(() => {
+    // Progress bar only starts when Rust confirms it is starting the miner.
+    // Progress bar ends when:
+    // - Rust side sends event with a proof completed
+    // - Rust side send event with a failure
+    if (tower.progress && tower.progress.pct_complete) {
+      let bar = document.getElementById("mining-progressbar");
+      bar.value = percent = tower.progress.pct_complete;
+    }
+  });
   
   onMount(async () => {
-    bar = document.getElementById("mining-progressbar");
-
-
-    tower.subscribe((t) => {
-      // Progress bar only starts when Rust confirms it is starting the miner.
-      // Progress bar ends when:
-      // - Rust side sends event with a proof completed
-      // - Rust side send event with a failure
-      if (t.progress && t.progress.pct_complete) {
-        bar.value = percent = t.progress.pct_complete;
-      }
-    });
-
-    minerProofComplete.subscribe(b => {
+    unsubsProofComplete = minerProofComplete.subscribe(b => {
       proofDone = b;
       if (b) {
         percent = 1;
       }
     })
 
-    minerLoopEnabled.subscribe((b) => {
+    unsubsLoopEnabled = minerLoopEnabled.subscribe((b) => {
       enable = b;
       if (enable) {
         // create the bar if not yet started.
@@ -47,6 +49,8 @@
 
   onDestroy(() => {
     clearInterval(looper);
+    unsubsProofComplete && unsubsProofComplete();
+    unsubsLoopEnabled && unsubsLoopEnabled();
   });
 
   function formatPercent(decimal) {
@@ -60,18 +64,16 @@
     <div class="uk-inline">
     <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
       {#if proofDone }
-        Proof Complete
+        {$_("miner.miner_process.status_complete")}
       {:else}
-        Mining in Progress - {formatPercent(percent)}     
-
+        {$_("miner.miner_process.status_in_process")} {formatPercent(percent)}
       {/if}
       
     </span>
       <!-- <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
         </span> -->
         <div uk-dropdown class="uk-text-light uk-text-muted uk-text-thin"> 
-          The percentage is an estimate. 
-          <br> It is based on your previous proof's elapsed time.
+          {@html $_("miner.miner_process.notes")}
         </div> 
     </div>
 
@@ -79,7 +81,7 @@
     
     <span class="uk-text-light uk-text-muted uk-text-thin">
       {#if percent > 1.01 }
-        <span> Over 100% only means this is taking longer than previous proof </span>
+        <span> {$_("miner.miner_process.notes2")} </span>
       {/if}
     </span>
   </div>

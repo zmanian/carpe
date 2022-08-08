@@ -7,15 +7,15 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import { routes } from "../../routes";
   import { notify_success } from "../../carpeNotify";
+  import { _ } from "svelte-i18n";
 
   // default playlist which is provided in Carpe.
-  // TODO: move this to another repo
-  let playlist_json_url = "https://raw.githubusercontent.com/OLSF/carpe/main/seed_peers/fullnode_seed_playlist.json";
+  let playlist_json_url = "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist.json";
 
   function updateNetwork() {
     // check input data
     // submit
-    invoke("update_from_playlist", { url: playlist_json_url })
+    invoke("override_playlist", { url: playlist_json_url })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
@@ -32,7 +32,7 @@
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
-        <span> Update Playlist of Network Servers</span>
+        <span> {$_("settings.network_settings.playlist")} </span>
         <input
           class="uk-input"
           type="text"
@@ -45,10 +45,10 @@
         <span
           on:click={updateNetwork}
           class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">Use Playlist</span
+          id="add-btn">{$_("settings.network_settings.btn_submit")}</span
         >
         <Link to={routes.home}>
-          <span class="uk-button uk-button-default uk-align-right">Cancel</span>
+          <span class="uk-button uk-button-default uk-align-right">{$_("settings.network_settings.btn_cancel")}</span>
         </Link>
       </div>
     </fieldset>

@@ -1,0 +1,282 @@
+{
+  "nav": {
+    "wallet": "Porte-feuille",
+    "miner": "Mineur",
+    "transactions": "Transactions",
+    "events": "Évènement"
+  },
+  "layout": {
+      "connection_error": {
+         "title": "Oops, connexion au réseau 0L impossible",
+         "body": "<p> Il est probable que le noeud pair en amont (server) soit déconnecté.</p> <h3> Ne vous inquiétez pas, votre compte et vos coins sont en sécurité.</h3> <p>Pour mettre à jour vos noeuds de paires, vous pouvez allez là:</p>"
+      },
+      "error_accordion": {
+          "title": "Rapport d'erreurs",
+          "category": "Categorie d'erreur",
+          "id": "ID"
+      }
+  },
+  "wallet": {
+    "wallet": "Porte-feuille",
+    "carpe": "CARPE",
+    "btn_new_account": "Nouveau Compte",
+    "btn_restore_account": "Récupération de Compte",
+    "newbie_message": "Pas de compte trouvé.",
+    "reminder_create": {
+      "card_title": "Embarquement",
+      "message_headline": "Vous avez généré les clés de votre compte, mais il n'existe pas encore sur la chaine.",
+      "message_prefix": "Rejoingnez notre communauté sur ",
+      "message_suffix": " et joingnez votre clé d'embarquement pour etre embarqué.",
+      "onboard_key": "CLÉ D'EMBARQUEMENT"
+    },
+    "account_list": {
+      "nickname": "Surnom",
+      "address": "Adresse",
+      "authkey": "Authkey",
+      "balance": "Solde",
+      "offline": "hors-ligne",
+      "loading": "chargement",
+      "account_on_chain": "Compte pas sur Chaine",
+      "message": " Votre solde diminera pour toutes transactions que vous envoyées, incluant celles du minage."
+    },
+    "keygen": {
+      "title": "Creer un Nouveau Compte",
+      "description": "Àprés avoir généré votre compte et phrase secrète, vous aurez besoin qu'une personne vous envoi un jeton 0L à ce compte pour qu'il soit sur la chaine.",
+      "btn_generate_keys": "Générer des clés",
+      "btn_generate_keys_2": "Générer différentes clés",
+      "btn_create_account": "Créer ce compte",
+      "account_address": "Adresse du compte",
+      "onboard_key": "Clé d'embarquement",
+      "onboard_key_description": "Aussi appelée clé d'authenfication. Vous en avez besoin pour créer ce compte sur la chaine.",
+      "securite_recovery_phrase": "PHRASE SECRÈTE DE RECUPÉRATION",
+      "securite_note": "Clé secrète de votre compte (mnémonique). Si vous la perdez, personne ne pourra vous aider. Donc notez la et sécurisez la.",
+      "account_tips": "Votre compte n'existe pas encore sur la chaine. Vous devrez fournir votre clé d'embarquement à quelqu'un pour qu'il soit créé."
+    },
+    "account_from_mnem_submit": {
+      "title":" Attention!",
+      "body": " <p>Avez-vous bien noté vore phrase mnemonique secrète?</p> <p>Vous ne pourrez pas récupérer votre compte sans. Personne ne peut vous aider si vous la perdez.</p><p>Dernier avertissement pour la noter.</p>",
+      "btn_cancel": "Je veux re-vérifier",
+      "btn_submit": "Créer ce compte",
+      "btn_submiting": "Création en cours"
+    },
+    "account_from_mnem_from": {
+      "title": "RÉCUPÉRATION DE COMPTE",
+      "description": "En utilisant votre phrase de récupération (mnémonique) vous pouvez configurer Carpe en porte-feuille pour surveiller et effectuer des transactions",
+      "placeholder": "Récupération Mnémonique"
+    },
+    "account_switcher": {
+      "select_account": "Selection du Compte",
+      "switch_account": "Changer de Compte",
+      "setting": "Paramètres",
+      "developers": "Dévelopeurs"
+    }
+  },
+  "about": {
+    "about": "À propos",
+    "release": "Release",
+    "version": "Version",
+    "branch": "Branche",
+    "commit": "Commit"
+  },
+  "settings": {
+    "title": "PARAMÈTRES",
+    "langapp_settings": {
+      "title": "Language and Apparence",
+      "lang": "Language",
+      "lang_description": "Choisissez le language à afficher",
+      "lang_button": "Français",
+      "theme": "Theme",
+      "theme_description": "Choose the theme"
+    },
+    "network_settings": {
+      "title": "PARAMÈTRES RÉSEAU",
+      "list_of_peers": "LISTE DES PAIRES",
+      "description": "Choisissez une playlist de noeuds paires pour accéder à la chaîne. Un noeud aléatoire de la liste sera utilisé pour se connecter au réseau. Fournissez un fichier playlist.json pour mettre à jour les paires.",
+      "playlist": "Rafraichir la Playlist des Serveurs",
+      "override_peers": "ÉCRASER LES PAIRES",
+      "override_peers_description": "Vous pouvez forcer l'utilisation de paire different. Vous pouvez choisir qu'un seul paire avec ce paramètre. La playlist sera remplacée par une liste d'un élément.",
+      "url_of_upstream_node": "URL du noeud en amont",
+      "btn_update": "RAFRAICHIR",
+      "upstream_title": "RECUPÉRER UN NOUVEAU POINT DE CHEMINEMENT DU NOEUD EN AMONT",
+      "upstream_subtitle": "La plupart des problèmes de cheminement sont résolu en récupérant un nouveau point d'un noeud en amont.",
+      "btn_fetch_new_waypoint": "Récupérer Nouveau Point deCheminement",
+      "btn_cancel": "Annuler",
+      "btn_submit": "UTILISER LA PLAYLIST"
+    },
+    "account_settings": {
+      "title": "PARAMÈTRES DE COMPTE",
+      "btn_remove": "SUPPRIMER LE COMPE",
+      "comfirm": "Confirmer la suppression du compte de ce dispositif? Cela est irreversible.",
+      "description": "Votre compte sera toujours sur la chaine. Cela l'enlève juste de ce dispositif. Si vous n'avez plus votre phrase de récupération (mnémonique), vous pourrez être vérrouillé de ce compte définitivement. PERSONNE NE PEUT RETROUVER VOTRE MNÉMONIQUE."
+    }
+  },
+  "miner": {
+    "title": "Mineur",
+    "miner_backlog": {
+      "title": "Synchroniser vos preuves",
+      "subtitle": "Re-soumettre les preuves locales",
+      "in_process": "Backlog en cours de soumission",
+      "btn_submit": "Soumettre le backlog"
+    },
+    "miner_phases": {
+      "backlog_started": "Auditeur du backlog lancé",
+      "backlog_in_process": "Backlog en cours",
+      "backlog_complete": "Backlog complété",
+      "mining_enabled": "Minage activé",
+      "proof_started": "Requête de démarrage recue",
+      "proof_complete": "Preuve complétée"
+    },
+    "miner_process": {
+      "status_complete": "Preuve complétée",
+      "status_in_process": "Minage en cours",
+      "notes": "Le pourcentage est une estimation. <br>Il est basé sur le temps pris par les preuves précédentes.",
+      "notes2": "Dépassé 100% signifie juste que la preuve en cours prend plus de temps que la précédente."
+    },
+    "tower_state": {
+      "local_height": "Hauteur locale de la Tour",
+      "on_chain_height": "Hauteur On-chain de la Tour",
+      "mined_in_last_epoch": "Dernier Epoch Miné",
+      "sent_in_this_epoch": "Preuves envoyées pour cette Epoch",
+      "empty": "Pas de preuve locales trouvée",
+      "proof_more": "Vous avez soumis le maximum de preuves (max 72)",
+      "proof_less": "Nombre de preuves insuffisantes pour recevoir la récompense (min 8)",
+      "proof_ok": "Vous avez soumis suffisament de preuve (min 8)"
+    },
+    "cards": {
+      "cant_start": {
+        "title": "Votre compte n'est présentement pas sur la chaine",
+        "body": "Le mineur ne peut débuter tant que votre compte n'est pas sur la chaine. Si vous avez généré vos clés localement, quelqu'un doit vous envoyer des coins."
+      },
+      "disco_error": {
+        "title": "Discontinuité ",
+        "body": "Il semblerait qu'il y a une preuve manquante dans votre soumission. Chaque preuve a besoin de sa précédente, et votre preuve a été rejetée de fait."
+      },
+      "epoch_status": {
+        "empty_title": "Pas de preuves envoyées",
+        "empty_body": "Aucune preuve présente sur la chaine. Quand vous aurez soumis votre première preuve, vous trouverez vos stats ici.",
+        "in_process_title": "Allez!",
+        "in_process_body": "Votre compte doit soumettre au moins 8 preuves par epoch pour recevoir une récompense. Les récompenses sont distribuée au prochain epoch.",
+        "complete_title": "Victoire!",
+        "complete_body": "Votre compte a soumis assez de preuve pour cet epoch (minimum 8 preuves par epoch). Vous recevrez votre récompense au début du prochain epoch.",
+        "exceed_title": "Whoa!!!",
+        "exceed_body": "Vous avez miné 72 proofs, le nombre maximum de preuves par epoch. La Tower peut continuer de miner des preuves, mais elles seront soumises au prochain epoch."
+      },
+      "first_proof": {
+        "title": "Minons votre première preuve",
+        "body": "<p> Un peu de patience! Cela va prendre de 30mins à 1hr</p> <p> Votre solde diminura en minant vos preuves. Si vous soumettez le minimum requis, vous recevrez votre récompense au prochain epoch.</p> <p> Désactivez les paramètres de Veille sur votre ordinateur afin que le mineur continue de tourner en votre absence.</p>",
+        "body_disabled": "Clickez sur le switch pour démarrer le minage!"
+      },
+      "invalid_proof": {
+        "title": "Vérification impossible des preuves",
+        "body": "Bizarre. Cette preuve a été rejetée car elle n'est pas une \"delay proof\" valide. Ceci est habituellement dû à des mauvais paramètres."
+      },
+      "oops": {
+        "title": "Oops",
+        "body": "Une erreur s'est passée durant le minage de la \"delay proof\""
+      },
+      "too_many_proofs": {
+        "title": "Trop de preuves",
+        "body": "Vous aurez soumis plus de preuves que prévu durant cet epoch. La chaine supporte un max de {maxNum} preuves durant chaque epoch. Vos preuves additionnelles seront soumises au prochain epoch."
+      },
+      "wrong_difficulty": {
+        "title": "Mauvaise Difficulté",
+        "body": "La difficulté de votre preuve ne correspond pas à celle de la chaîne. Vérifiez que vous êtes connecté au bon réseau avec le bon paramètre de difficulté."
+      },
+      "sync_proof": {
+        "title": "Synchronisation des preuves",
+        "body": "Preuves en attente de la transaction : {delta} ",
+        "body_0": "Vous avez plus de preuves sur la chaîne que sur votre dispositif. Il vous manque des preuves localement."
+      }
+    }
+  },
+  "txs": {
+    "deno_tx": "Demo Tx",
+    "account": "Compte",
+    "balance": "Solde",
+    "btn_onboard": "Embarquer Compte",
+    "btn_transfer": "Transfert de Coins",
+    "onboard": {
+      "title": "Embarquer un Compte",
+      "await": "",
+      "btn_onboard": "Embarquer",
+      "btn_cancel": "Annuler",
+      "no_balance_title": "Solde insuffisant",
+      "no_balance_body1": "L'embarquement de {onboard_key} a échoué.",
+      "no_balance_body2": "Vous avez moins que 2 coins dans votre compte, vous ne pouvez donc pas embarquer d'autres comptes."
+    },
+    "set_wallet_type": {
+      "title": "Modifier le Type de Compte",
+      "subtitle": " Soyez sûr de vous, cette opération est irreversible! Les porte-feuilles \"Slow\" et \"Community\" sont permanents.",
+      "btn_slow": "Changer en \"Slow\"",
+      "btn_confirm_slow": "Confirmez le passage en \"Slow\"? Cet opération est irreversible.",
+      "slow_confirm": "Changer en \"Slow\"",
+      "btn_community": "Changer en \"Community\"",
+      "btn_confirm_community": "Changer en \"Community\"",
+      "community_confirm": "Confirmez le passage en \"Community\"? Cet opération est irreversible"
+    },
+    "transfer": {
+      "title": "Transfert de Coins",
+      "sender": "Envoyeur",
+      "balance": "Solde",
+      "receiver": "Receveur",
+      "amount": "Montant",
+      "amount_label": "Montant (fractions non permises)",
+      "receiver_placeholder": "Adresse du Receveur",
+      "amount_placeholder": "Montant à transferer",
+      "confirm_title": "Attention!",
+      "please_confirm": "Veuillez confirmer les informations du transfert:",
+      "await": "Attente de txs",
+      "btn_next": "Suivant",
+      "btn_confirm": "Confirmer",
+      "btn_cancel": "Annuler",
+      "btn_close": "Fermer",
+      "error_amount_greater_than_balance": "Le montant ne peut pas être supérieur au solde de compte",
+      "error_receiver_equals_sender": "Les adresses de l'Envoyeur et Receveur doivent être differentes",
+      "error_slow_wallet": "Le transfert de Coin est désactivé pour les porte-feuilles 'slow'.",
+      "success": "Transfert executé avec succés",
+      "failed": "Transfert échoué. Code: {code}"
+    }
+  },
+  "events": {
+    "account_events": "Évènements du compte",
+    "version": "Version",
+    "type": "Type",
+    "amount": "Montant",
+    "sender": "Expéditeur",
+    "receiver": "Receveur",
+    "received_payment": "Paiement recu",
+    "sent_payment": "Paiement envoyé",
+    "loading": {
+      "error": "Erreur durant le chargement des évènements:",
+      "corrupted_db": "Actuellement connecté à un noeud n'ayant pas tous les évènements.",
+      "data_safe": "Ne vous inquiétez pas, votre compte est sécurisé sur la chaine. Essayez de vous connecter à un autre noeud en amont."
+    }
+  },
+  "make_whole": {
+    "link_title": "Claim Coins",
+    "card": {
+      "title": "Claim Your Missing Coins",
+      "body": "<p>Oops. Occasionally blockchains make math mistakes. 0L tries to fix them as quickly as possible.</p><p>Miner Identity Subsidy Incident: From Epoch 0 to epoch 52, the payouts to miners was lower than expected. Below you can credit your missing coins from that period.</p>"
+    },
+    "table": {
+      "account": "Account",
+      "amount": "Amount",
+      "claim": "Claim"
+    },
+    "claim_btn": {
+      "await" : "Await...",
+      "claim": "Claim Now"
+    },
+    "modal_success": {
+      "title": "Transation confirmed!",
+      "amount_for_account": "<p>You have claimed <span class=\"uk-text-bold\">{coins} coins</span> for account <br><span class=\"uk-text-bold\">{account}</span>.</p>",
+      "check_balance": "You can check your balance now.",
+      "ok_btn": "OK"
+    },
+    "modal_error": {
+      "title": "Claim Error",
+      "body": "You must turn off miner to claim this account coins.",
+      "ok_btn": "OK"
+    }
+  }
+}

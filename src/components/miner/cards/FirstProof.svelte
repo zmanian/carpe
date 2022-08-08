@@ -1,24 +1,29 @@
-<script>
-  import { onMount } from "svelte";
+<script lang="ts">
+  import { onMount, onDestroy } from "svelte";
   import CardAlert from "../../layout/CardAlert.svelte";
   import { minerLoopEnabled } from "../../../miner";
+  import { _ } from "svelte-i18n";
 
   let enabled = false; 
+  let unsubsLoopEnabled;
+  
   onMount(async () => {
-    minerLoopEnabled.subscribe(boo => enabled = boo);
+    unsubsLoopEnabled = minerLoopEnabled.subscribe(boo => enabled = boo);
+  });
+
+  onDestroy(async () => {
+    unsubsLoopEnabled && unsubsLoopEnabled();
   });
 
 </script>
 
 <CardAlert>
-  <span slot="title">Let's mine your first proof </span>
+  <span slot="title">{$_("miner.cards.first_proof.title")}</span>
   <div slot="body">
     {#if enabled}
-      <p> Hang tight! This will take at least 30mins, maybe up to 1hr</p>
-      <p> You will see your balance go down while you mine proofs. If you reach the minimum per day, you will receive a reward, on the next day (epoch).</p>
-      <p> Check your computer settings so that the computer doesn't sleep when the screen shuts off. You want the miner running while you're not here.</p>
+      {@html $_("miner.cards.first_proof.body")}
     {:else}
-      <p> Turn the switch on to start mining! </p>
+      <p> {$_("miner.cards.first_proof.body_disabled")} </p>
     {/if}
   </div>
 </CardAlert>

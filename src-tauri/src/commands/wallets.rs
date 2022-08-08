@@ -6,9 +6,10 @@
  *
  **/
 use crate::carpe_error::CarpeError;
-use crate::configs::{default_accounts_db_path};
+use crate::configs::default_accounts_db_path;
 use crate::{configs, configs_network, configs_profile, key_manager};
 use anyhow::{bail, Error};
+use diem_client::views::EventView;
 use diem_types::account_address::AccountAddress;
 use diem_types::transaction::authenticator::AuthenticationKey;
 use diem_wallet::WalletLibrary;
@@ -18,6 +19,7 @@ use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
 use super::get_balance;
+use super::get_payment_events;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
   pub accounts: Vec<AccountEntry>,
@@ -28,7 +30,7 @@ pub struct AccountEntry {
   pub account: AccountAddress,
   pub authkey: AuthenticationKey,
   pub nickname: String,
-  pub on_chain: bool,
+  pub on_chain: Option<bool>,
   pub balance: Option<u64>,
 }
 
@@ -38,7 +40,7 @@ impl AccountEntry {
       account: address.clone(),
       authkey,
       nickname: get_short(address),
-      on_chain: false,
+      on_chain: None,
       balance: None,
     }
   }
@@ -47,7 +49,7 @@ impl AccountEntry {
 #[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq)]
 pub struct NewKeygen {
   entry: AccountEntry,
-  mnem: String
+  mnem: String,
 }
 
 /// Keygen handler
@@ -61,9 +63,9 @@ pub fn keygen() -> Result<NewKeygen, CarpeError> {
     .map_err(|_| CarpeError::misc("cannot generate keys"))?;
   let res = NewKeygen {
     entry: AccountEntry::new(address, authkey),
-    mnem: mnemonic_string
+    mnem: mnemonic_string,
   };
-  
+
   Ok(res)
 }
 
@@ -76,7 +78,7 @@ pub fn is_init() -> Result<bool, CarpeError> {
 /// default way accounts get initialized in Carpe
 #[tauri::command]
 pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
+  danger_init_from_mnem(mnem)
 }
 
 pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
@@ -94,13 +96,13 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
   insert_account_db(get_short(address.clone()), address, authkey)?;
 
   key_manager::set_private_key(&address.to_string(), priv_key)
-  .map_err(|e|{ CarpeError::config(&e.to_string()) })?;
+    .map_err(|e| CarpeError::config(&e.to_string()))?;
 
   configs_profile::set_account_profile(address.clone(), authkey.clone())?;
-  
+
   // this may be the first account and may not yet be initialized.
   if !init {
-    configs_network::set_network_configs(configs_network::Networks::Mainnet)?;
+    configs_network::set_network_configs(diem_types::chain_id::NamedChain::MAINNET, None)?;
   }
 
   Ok(AccountEntry::new(address, authkey))
@@ -114,6 +116,12 @@ pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
 }
 
 #[tauri::command(async)]
+pub fn get_account_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
+  let events = get_payment_events(account)?;
+  Ok(events)
+}
+
+#[tauri::command(async)]
 pub fn refresh_accounts() -> Result<Accounts, CarpeError> {
   let all = read_accounts()?;
   let updated = map_get_balance(all)?;
@@ -121,15 +129,17 @@ pub fn refresh_accounts() -> Result<Accounts, CarpeError> {
   Ok(updated)
 }
 
-fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError>  {
-    all_accounts.accounts = all_accounts.accounts.into_iter()
+fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError> {
+  all_accounts.accounts = all_accounts
+    .accounts
+    .into_iter()
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
-      e.on_chain = e.balance.is_some();
+      e.on_chain = Some(e.balance.is_some());
       e
     })
     .collect();
-    Ok(all_accounts)
+  Ok(all_accounts)
 }
 
 fn find_account_data(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
@@ -165,7 +175,7 @@ pub fn add_account(
 }
 
 /// Switch tx profiles, change 0L.toml to use selected account
-#[tauri::command]
+#[tauri::command(async)]
 pub fn switch_profile(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
   match find_account_data(account) {
     Ok(entry) => {
@@ -191,11 +201,19 @@ fn insert_account_db(
     account: address,
     authkey: authkey,
     nickname: nickname,
-    on_chain: false,
+    on_chain: None,
     balance: None,
   };
 
-  if !all.accounts.contains(&new_account) {
+  let acc_list: Vec<AccountAddress> = all
+    .accounts
+    .iter()
+    .map(|a| {
+    a.account
+  })
+  .collect();
+
+  if !acc_list.contains(&new_account.account) {
     all.accounts.push(new_account);
 
     // write to db file
@@ -217,12 +235,12 @@ fn insert_account_db(
 fn update_accounts_db(accounts: &Accounts) -> Result<(), CarpeError> {
   let app_dir = default_accounts_db_path();
   let serialized = serde_json::to_vec(accounts)
-  .map_err(|e| CarpeError::config(&format!("json account db should serialize, {:?}", &e)))?;
+    .map_err(|e| CarpeError::config(&format!("json account db should serialize, {:?}", &e)))?;
 
   File::create(app_dir)
-  .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be created!, {:?}", &e)))?
-  .write_all(&serialized)
-  .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be written!, {:?}", &e)))?;
+    .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be created!, {:?}", &e)))?
+    .write_all(&serialized)
+    .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be written!, {:?}", &e)))?;
   Ok(())
 }
 
@@ -289,6 +307,6 @@ fn test_init_mnem() {
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
   danger_init_from_mnem(alice).unwrap();
   let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
-  let cfg = parse_toml(path.to_str().unwrap().to_owned());
+  let cfg = parse_toml(Some(path));
   dbg!(&cfg);
 }
