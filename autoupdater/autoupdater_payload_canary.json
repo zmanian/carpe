@@ -1,16 +1,16 @@
 {
   "name": "v0.5.0",
-  "notes": "Test version",
-  "pub_date": "2020-06-22T19:25:57Z",
+  "notes": "New features: Claim your Make Whole payment, send user transactions, account events view. Plus bugfixes to network connectivity.",
+  "pub_date": "2022-08-08T17:00:00Z",
   "platforms": {
     "darwin": {
-      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/carpe.app.tar.gz"
+      "url": "https://github.com/OLSF/carpe/releases/download/v0.5.0/carpe.app.tar.gz"
     },
     "linux": {
-      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/carpe.app.tar.gz"
+      "url": "https://github.com/OLSF/carpe/releases/download/v0.5.0/carpe_0.5.0_amd64.deb"
     },
     "win64": {
-      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/app.AppImage.tar.gz"
+      "url": "https://github.com/OLSF/carpe/releases/download/v0.5.0/carpe_0.5.0_x64.msi.zip"
     }
   }
 }
