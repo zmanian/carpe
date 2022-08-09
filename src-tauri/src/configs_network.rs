@@ -167,7 +167,9 @@ pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
 /// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests
 /// all the endpoints in upstream_peers on every TX.
 pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
+  dbg!("override_upstream_node");
   let mut cfg = configs::get_cfg()?;
+  dbg!(&cfg);
   cfg.profile.upstream_nodes = vec![url];
   cfg.save_file()?;
   Ok(cfg)
