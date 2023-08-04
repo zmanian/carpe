@@ -84,6 +84,14 @@ fn main() {
       menu
     }));
 
+  let mut context = tauri::generate_context!();
+  if let Some(u) = option_env!("CARPE_UPDATER_URL"){
+    let updater = &mut context.config_mut().tauri.updater;
+    updater.endpoints.replace(vec![u.to_string()]);
+    dbg!(&updater.endpoints);
+  };
+
+
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       // Accounts
@@ -148,6 +156,6 @@ fn main() {
       set_preferences_locale
     ])
     .menu(menu)
-    .run(tauri::generate_context!())
+    .run(context)
     .expect("error while running tauri application");
 }
