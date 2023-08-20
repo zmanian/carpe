@@ -1,6 +1,6 @@
 {
 	"package": {
-		"productName": "carpe",
+		"productName": "carpe-legacy-canary",
 		"version": "0.5.0"
 	},
 	"build": {
@@ -14,7 +14,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://raw.githubusercontent.com/OLSF/carpe/main/autoupdater/autoupdater_payload.json"
+        "https://github.com/0o-de-lally/carpe/blob/legacy-v5/autoupdater/autoupdater_payload_canary.json"
       ],
       "dialog": true
     },
