@@ -6,6 +6,7 @@ on:
       - 'legacy-v5'
 env:
   CARPE_UPDATER_URL: "https://github.com/0o-de-lally/carpe/blob/legacy-v5/autoupdater/autoupdater_payload_canary.json"
+
 jobs:
   publish:
     name: Build Binary for ${{ matrix.os }}
@@ -23,6 +24,11 @@ jobs:
           rust-version: stable
           components: rustfmt
       - uses: actions/checkout@v1
+
+      - name: set the Mac compile target
+        if: matrix.os == 'macos-11'
+        run: export CARGO_BUILD_TARGET='universal-apple-darwin'
+
       - name: yarn installation
         run: yarn install
       - name: Build Tauri
