@@ -2,10 +2,8 @@ name: Build Binaries for Mac
 
 on:
   push:
-    branches:
-      - 'legacy-v5'
-# env:
-#   CARPE_UPDATER_URL: "https://raw.githubusercontent.com/0o-de-lally/carpe/legacy-v5/autoupdater/autoupdater_payload_canary.json"
+    tags:
+      - '*canary*'
 
 jobs:
   publish:
