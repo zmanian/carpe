@@ -2,7 +2,7 @@ name: Build Binaries for Mac
 
 on:
   push:
-    tags:
+    branches:
       - '*canary*'
 
 jobs:

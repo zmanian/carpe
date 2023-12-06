@@ -2,7 +2,7 @@ name: Build Binaries for Windows
 
 on:
   push:
-    tags:
+    branches:
       - '*canary*'
 
 jobs:
