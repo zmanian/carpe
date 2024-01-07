@@ -2,12 +2,21 @@
   import { onMount } from "svelte";
   import { getVersion, app_version } from "../../version";
   import { _ } from "svelte-i18n";
-  
+  import {
+    checkUpdate,
+  } from '@tauri-apps/api/updater'
+
   let release = {};
+
   onMount(async () => {
     getVersion();
     app_version.subscribe(v => release = v)
   });
+
+  const tryUpdate = async () => {
+    checkUpdate().
+    then(r => console.log(r))
+  }
 
 </script>
 
@@ -27,5 +36,8 @@
       <span class="uk-text-bold">{$_("about.branch")}: </span>{release.head}
     </p>
 
+  </div>
+  <div>
+    <button on:click={tryUpdate} class="uk-button uk-button-default">Update</button>
   </div>
 </main>

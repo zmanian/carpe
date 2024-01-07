@@ -104,7 +104,9 @@
     );
 
     unlistenUpdater = await listen('tauri://update-status', (data: { payload: any }) => {
-      logger(Level.Warn, JSON.stringify(data?.payload));
+      let msg = JSON.stringify(data?.payload)
+      console.log("updater...", msg)
+      logger(Level.Warn,msg)
     })
   });
 

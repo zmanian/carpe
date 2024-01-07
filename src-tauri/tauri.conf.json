@@ -14,7 +14,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-	      "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/canary/autoupdater/autoupdater_payload_canary.json"
+	      "https://gist.githubusercontent.com/0o-de-lally/3d809cb35062102ea879129a37e35d43/raw/3fe4de16d969638e4d713c78d4ccf722b2a87778/legacy_canary_updater.json"
       ],
       "dialog": true
     },
