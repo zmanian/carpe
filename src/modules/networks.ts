@@ -9,7 +9,8 @@ import { nodeEnvIsTest } from './debug'
 // matches rust equivalent
 export interface NetworkPlaylist {
   chain_id: NamedChain // Todo, use the Network Enum
-  nodes: [HostProfile]
+  nodes: HostProfile[]
+  chain_name?: NamedChain
 }
 
 // matches rust equivalent
@@ -34,7 +35,15 @@ export const updateNetwork = async (url: string, notice = true) => {
       notice && notify_success('Network Settings Updated')
     })
     .catch((error) => {
-      notice && raise_error(error as CarpeError, false, 'updateNetwork')
+      raise_error(error as CarpeError, true, 'override_playlist')
+      invoke('force_upstream', { url: 'https://rpc.openlibra.space:8080/' })
+        .then((res: NetworkPlaylist) => {
+          network_profile.set(res)
+          notice && notify_success('Network Settings Updated')
+        })
+        .catch((error) => {
+          notice && raise_error(error as CarpeError, false, 'force_upstream')
+        })
     })
 }
 export const defaultPlaylist = (): NetworkPlaylist => {
@@ -84,7 +93,7 @@ export const synced_fullnodes = writable<string[]>([])
 export const networkMetadata = writable<IndexResponse>()
 
 export function setNetwork(network: NamedChain) {
-  invoke('toggle_network', { chainId: network })
+  invoke('toggle_network', { chainIdStr: network })
     .then((res: NetworkPlaylist) => {
       network_profile.set(res)
       // update accounts from current network
@@ -117,8 +126,8 @@ export const getMetadata = async () => {
       networkMetadata.set(null)
       connected.set(false)
 
-      incrementBackoff()
       refreshUpstreamPeerStats() // update the metadata and if we are connected
+      incrementBackoff()
     })
 }
 
@@ -148,10 +157,7 @@ export const incrementBackoff = () => {
   new_time.setSeconds(new_time.getSeconds() + 2 * get(scanning_fullnodes_retries))
   scanning_fullnodes_backoff.set(new_time.getSeconds())
 }
-let current_network_profile: NetworkPlaylist
-network_profile.subscribe((value) => {
-  current_network_profile = value
-})
+
 let isTest = false
 nodeEnvIsTest.subscribe((value) => {
   isTest = value
@@ -160,10 +166,12 @@ export const initNetwork = async () => {
   logger(Level.Info, 'initNetwork')
   if (!isTest) {
     await getNetwork()
-    if (current_network_profile.chain_id === NamedChain.TESTING) {
-      logger(Level.Info, 'initNetwork')
-      return await updateNetwork(playlistJsonUrl, false)
-    }
+
+    return await updateNetwork(playlistJsonUrl, false)
   }
   return true
+}
+
+export function pickChainIdFromNetworkPlaylist(np: NetworkPlaylist) {
+  return (np.chain_name || np.chain_id).toUpperCase()
 }

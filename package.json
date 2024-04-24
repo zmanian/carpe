@@ -13,7 +13,8 @@
     "build:github-pr": "tauri build --config src-tauri/tauri.conf.pr.json --features carpe-pr",
     "build:web": "vite build",
     "lint": "svelte-check --tsconfig ./tsconfig.json && eslint src && prettier --check src",
-    "format": "eslint --fix src/* && prettier --write src"
+    "format": "eslint --fix src/* && prettier --write src",
+    "merge:lang": "node ./src/lang/merge.mjs"
   },
   "devDependencies": {
     "@svelte-put/copy": "^3.0.0",
@@ -27,7 +28,7 @@
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-svelte": "^2.28.0",
-    "prettier": "^3.0.1",
+    "prettier": "3.2.5",
     "prettier-plugin-svelte": "^3.0.3",
     "sass": "^1.62.1",
     "svelte": "^4.1.2",

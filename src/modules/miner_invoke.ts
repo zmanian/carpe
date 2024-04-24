@@ -4,7 +4,7 @@ import { get } from 'svelte/store'
 import { isKeyError, isRefreshingAccounts, signingAccount } from './accounts'
 import { Level, logger, raise_error, type CarpeError } from './carpeError'
 import { clearDisplayErrors } from './carpeErrorUI'
-import { notify_success } from './carpeNotify'
+import { notify_error, notify_success } from './carpeNotify'
 import { responses } from './debug'
 import {
   backlogListenerReady,
@@ -14,7 +14,7 @@ import {
   minerProofComplete,
   minerEventReceived,
   isTowerNewbie,
-  resetTowerStatus,
+  // resetTowerStatus,
   canMine,
 } from './miner'
 
@@ -162,8 +162,13 @@ export const startBacklogListener = async () => {
     .catch((e: CarpeError) => {
       let quiet_errors = false
       if (e.uid == 104) {
-        // check for known error: key not found after upgrade
-        isKeyError.set(true)
+        // User canceled the operation
+        if (e.trace && e.trace.startsWith('PlatformFailure')) {
+          notify_error(e.trace)
+        } else {
+          // check for known error: key not found after upgrade
+          isKeyError.set(true)
+        }
         backlogListenerReady.set(false)
         minerLoopEnabled.set(false)
 
@@ -211,7 +216,7 @@ export const maybeEmitBacklog = async () => {
   // and there is no backlog already in progress
   // and finally check that the listener has started.
   if (hasProofsPending() && !get(backlogInProgress) && get(backlogListenerReady)) {
-    maybeEmitBacklog()
+    emitBacklog()
   }
 }
 
@@ -222,8 +227,8 @@ export const getTowerChainView = async () => {
     account: get(signingAccount).account,
   })
     .then((res: TowerStateView) => {
-      resetTowerStatus()
-      if (res.verified_tower_height) {
+      // resetTowerStatus()
+      if (res.previous_proof_hash) {
         isTowerNewbie.set(false)
       }
       tower.update((b) => {

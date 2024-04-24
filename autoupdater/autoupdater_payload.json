@@ -1,15 +1,15 @@
 {
-  "version": "1.0.1",
-  "notes": "Multiple UI fixes, Chain autoconnect enabled",
-  "pub_date": "2024-02-17T22:57:15.333Z",
+  "version": "1.0.8",
+  "notes": "Improvements & Fixes",
+  "pub_date": "2024-03-11T10:57:15.333Z",
   "platforms": {
-    "darwin-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHZDRzV2QUVraUIzSldtQmhZTFlyNTBEVU04cDJOQzl5UG9JdGhQeE42L3RJa0VBOEJudjk2NVhhaHBLeVRZbndBVnpYL2JwWUxTK3llbE9obmRoR1FZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA4MjA5OTIzCWZpbGU6Y2FycGUuYXBwLnRhci5negowRHBQODllTGdjZW5EY2dlM05ZVHRTdnFNT2V2dmVxdDlXb0xlYjFTYWFyQTFmcGp6b2NxM2xVc1VRc3hYOUdranUwN0tzd1RBSE84dUxUMmlFaVZDQT09Cg==",
-      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.1/carpe_x64.app.tar.gz"
-    },
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbGx0TEVtaThOdko4TFoxZXZleTBSODFoNzh6bUNZM3A1RWVmK0JRc2c3ZHJIRnNYSmpVYmJWZ0hmYjk5OVZGMUkrMTM0U1N3SkZRKyt1VnIzbW0wY1F3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA4MjEwNjMwCWZpbGU6Y2FycGVfMS4wLjFfeDY0X2VuLVVTLm1zaS56aXAKMWZ0eW85Z3BEUmF5VEFwVnc0TXJBR1JPMjVLRlVJUHlkV3hCenRpaVVHNjFnbDRYWkxwUHJUUStoTVpqWTZZcllUYXBLdnduZzQxNzU3TUhsV211Q2c9PQo=",
-      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.1/carpe_1.0.1_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbG9paWZWc2NHUnMwN0hLdnhvMnNyaVBBRUhCQk1hMDJxN21aWS9oMERnOEVuQWNPaWFVeHIvb0Q3SEZuby81YzUzQ3JDUi95T1F6MzBDektMeFVGV2dNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzEzNzczNzg1CWZpbGU6Y2FycGVfMS4wLjhfeDY0X2VuLVVTLm1zaS56aXAKa0l4MUZxN0p2c3AwNVJwWWRnSWEyanBVZzVCanhxVjg0TVpNT1ZrUjk4SWwyRzBqWSt6TmlaN2NqaGdYYW5jd1RTVU0vNWx5ekdRcEZiZlNzNGJ5Qmc9PQo=",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.8/carpe_1.0.8_x64_en-US.msi.zip"
+    },
+    "darwin-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbG9XYjhkRTlxS2tmS1FHMmoyS0tqUVhpY2F6VG1keU92QmowZTRSMzVZREE5bzZvdGlhaGd5dzkxL1paRHliTkpaeEhkWXJWeGhSMHB1blZmcnJkZUFvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzEzNzc2MTY1CWZpbGU6Y2FycGUuYXBwLnRhci5negpvSlhkRThtWUR5RmFpMFd4aFNhUjEyaFA5Rkd5amJLU0pkdEdkaC9EcjdOd0FuR0t6R0kxNTlRRUZYYjBDdStLbWtlaGhFN2ZyV1orVkgvWWpUa3hDQT09Cg==",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.8/carpe_x64.app.tar.gz"
     }
   }
 }

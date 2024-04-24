@@ -4,13 +4,13 @@
   import { debugMode } from '../../modules/debug'
 
   import DebugCard from './DebugCard.svelte'
-  import DebugActions from './DebugActions.svelte'
-  import DebugSwitchProdTest from './DebugSwitchProdTest.svelte'
+  // import DebugActions from './DebugActions.svelte'
+  // import DebugSwitchProdTest from './DebugSwitchProdTest.svelte'
   import DebugSwitchRexMainnet from './DebugSwitchRexMainnet.svelte'
   import DebugSwitcher from './DebugSwitcher.svelte'
   import DebugPaths from './DebugPaths.svelte'
   import DebugNetworkInfo from './DebugNetworkInfo.svelte'
-
+  import DebugGetPrivateKey from './DebugGetPrivateKey.svelte'
   let debugEnabled = false
   onMount(async () => {
     debugMode.subscribe((b) => (debugEnabled = b))
@@ -24,8 +24,9 @@
     <DebugNetworkInfo />
     <DebugPaths />
     <DebugSwitchRexMainnet />
-    <DebugSwitchProdTest />
-    <DebugActions />
+    <!-- <DebugSwitchProdTest /> -->
+    <!-- <DebugActions /> -->
+    <DebugGetPrivateKey />
     {#if !debugEnabled}
       <DebugCard />
     {/if}

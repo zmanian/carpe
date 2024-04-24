@@ -19,7 +19,10 @@
   let account: CarpeProfile
   let unsubs
   onMount(async () => {
-    unsubs = signingAccount.subscribe((obj) => (account = obj))
+    unsubs = signingAccount.subscribe((obj) => {
+      account = obj
+      watchOnly = obj.watch_only
+    })
   })
 
   let receiver: string
@@ -29,7 +32,7 @@
   let errorMessage = ''
   let waitingTxs = false
   let waitingConfirmation = false
-
+  let watchOnly = false
   const re = /[a-fA-F0-9]{32}/i
 
   let isReceiverValid = true
@@ -57,6 +60,7 @@
       sender: account.account,
       receiver: receiver.trim(),
       amount: amount,
+      legacy: account.account.startsWith('0'.repeat(32)),
     })
       .then((res) => {
         responses.set(JSON.stringify(res))
@@ -139,7 +143,7 @@
           >
         </p>
       {:else}
-        <form id="account-form">
+        <form id="account-form" on:submit|preventDefault={() => {}}>
           <fieldset class="uk-fieldset uk-grid-small" uk-grid>
             <div class="uk-width-3-4@s">
               <label class="uk-form-label" for="sender-text">{$_('txs.transfer.sender')} </label>
@@ -160,7 +164,7 @@
               <div class="uk-form-controls">
                 <input
                   id="receiver-text"
-                  disabled={waitingTxs}
+                  disabled={waitingTxs || watchOnly}
                   class="uk-input"
                   type="text"
                   placeholder={$_('txs.transfer.receiver_placeholder')}
@@ -176,7 +180,7 @@
                 <!-- add mask -->
                 <input
                   id="amount-text"
-                  disabled={waitingTxs}
+                  disabled={waitingTxs || watchOnly}
                   class="uk-input"
                   type="text"
                   placeholder={$_('txs.transfer.amount_placeholder')}
@@ -196,7 +200,7 @@
                 </button>
                 <button
                   on:click={() => (waitingConfirmation = true)}
-                  disabled={waitingTxs || !isValidAmount || !isReceiverValid}
+                  disabled={waitingTxs || !isValidAmount || !isReceiverValid || watchOnly}
                   class="uk-button uk-button-primary"
                 >
                   {waitingTxs ? $_('txs.transfer.await') : $_('txs.transfer.btn_next')}
